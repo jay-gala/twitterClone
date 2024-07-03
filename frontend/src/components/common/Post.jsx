@@ -13,7 +13,7 @@ const Post = ({ post }) => {
   const [comment, setComment] = useState("");
 
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const { mutate: deletePost, isPending } = useMutation({
     mutationFn: async () => {
@@ -25,15 +25,15 @@ const Post = ({ post }) => {
         if (!res.ok) {
           throw new Error(data.error || "something went wrong");
         }
-        return data
+        return data;
       } catch (error) {
         throw new Error(error);
       }
     },
     onSuccess: () => {
-      toast.success("post deleted successfully")
+      toast.success("post deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["posts"] });
-    }
+    },
   });
 
   const postOwner = post.user;
@@ -45,7 +45,9 @@ const Post = ({ post }) => {
 
   const isCommenting = false;
 
-  const handleDeletePost = () => {deletePost()};
+  const handleDeletePost = () => {
+    deletePost();
+  };
 
   const handlePostComment = (e) => {
     e.preventDefault();
@@ -78,13 +80,13 @@ const Post = ({ post }) => {
             </span>
             {isMyPost && (
               <span className="flex justify-end flex-1">
-                {!isPending && <FaTrash
-                  className="cursor-pointer hover:text-red-500"
-                  onClick={handleDeletePost}
-                />}
-                {isPending && (
-                  <LoadingSpinner size="sm"/>
+                {!isPending && (
+                  <FaTrash
+                    className="cursor-pointer hover:text-red-500"
+                    onClick={handleDeletePost}
+                  />
                 )}
+                {isPending && <LoadingSpinner size="sm" />}
               </span>
             )}
           </div>
